@@ -1,9 +1,10 @@
-import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, OnInit, ViewChildren } from '@angular/core';
 import { ApiService } from './services/api.service';
-import { ChartConfiguration } from 'chart.js';
+import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
 import { SpinnerService } from './services/spinner.service';
 import { BaseChartDirective } from 'ng2-charts';
 import { environment } from '../environments/environment.development';
+import DatalabelsPlugin from 'chartjs-plugin-datalabels';
 
 @Component({
   selector: 'app-root',
@@ -172,5 +173,34 @@ export class AppComponent implements OnInit {
   public lapdMainBarChartOptions: ChartConfiguration<'bar'>['options'] = {
     responsive: false,
   };
+
+  public pieChartOptions: ChartConfiguration['options'] = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+      },
+      datalabels: {
+        formatter: (value: any, ctx: any) => {
+          if (ctx.chart.data.labels) {
+            return ctx.chart.data.labels[ctx.dataIndex];
+          }
+        },
+      },
+    },
+  };
+  public pieChartData: ChartData<'pie', number[], string | string[]> = {
+    labels: ['Download', 'Sales', 'Mail Sales'],
+    datasets: [
+      {
+        data: [300, 500, 100],
+      },
+    ],
+  };
+  public pieChartType: ChartType = 'pie';
+  public pieChartPlugins = [DatalabelsPlugin];
+
+
 
 }

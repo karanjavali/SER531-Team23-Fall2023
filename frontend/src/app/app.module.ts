@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { MaterialModule } from './material/material.module';
-import { NgChartsModule } from 'ng2-charts';
+import { NgChartsConfiguration, NgChartsModule } from 'ng2-charts';
 import { HttpClientModule } from '@angular/common/http';
 
 
@@ -22,7 +22,7 @@ import { HttpClientModule } from '@angular/common/http';
     NgChartsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [NgChartsConfiguration],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

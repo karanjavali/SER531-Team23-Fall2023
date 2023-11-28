@@ -55,3 +55,14 @@
         [legend]="lapdMainBarChartLegend"
         [type]="'bar'">
 </canvas>
+
+<div style="display: block; width: 600px; height: 600px;">
+  <canvas 
+  baseChart
+  [data]="pieChartData"
+  [type]="pieChartType"
+  [options]="pieChartOptions"
+  [plugins]="pieChartPlugins"
+>
+</canvas>
+</div>

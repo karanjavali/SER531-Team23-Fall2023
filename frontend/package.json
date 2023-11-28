@@ -21,6 +21,7 @@
     "@angular/platform-browser-dynamic": "^17.0.0",
     "@angular/router": "^17.0.0",
     "bootstrap": "^5.3.2",
+    "chartjs-plugin-datalabels": "^2.2.0",
     "ng2-charts": "^5.0.3",
     "ngx-spinner": "^16.0.2",
     "rxjs": "~7.8.0",
