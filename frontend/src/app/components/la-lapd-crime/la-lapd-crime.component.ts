@@ -25,7 +25,8 @@ export class LaLapdCrimeComponent {
   numOffensesTotal:number = 0;
   public lapdMainBarChartOptions: ChartConfiguration<'bar'>['options'] = {
     responsive: false,
-    indexAxis: "y"
+    indexAxis: "y",
+    backgroundColor: 'rgba(63, 81, 181, 0.8)'
   };
 
   lapdMainData:any[] = [];
@@ -40,7 +41,7 @@ export class LaLapdCrimeComponent {
   ) { }
 
   ngOnInit() {
-    // get hate crime data
+    // get lapd main data
     this.spinnerService.showSpinner();
     this.api.get(environment.getCrimeDataUrl).subscribe((res:any) => {
       this.lapdMainData = res.lapdMain;

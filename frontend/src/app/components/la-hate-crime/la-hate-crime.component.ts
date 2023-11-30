@@ -34,6 +34,7 @@ export class LaHateCrimeComponent {
 
   public hateCrimeBarChartOptions: ChartConfiguration<'bar'>['options'] = {
     responsive: false,
+    backgroundColor: 'rgba(63, 81, 181, 0.8)'
   };
 
   constructor(

@@ -64,7 +64,7 @@ export class LaCityComparisonComponent {
   cityOptions:string[] = [];
 
   ngOnInit() {
-    // get hate crime data
+    // get city stats data
     this.spinnerService.showSpinner();
     this.api.get(environment.getCrimeDataUrl).subscribe((res:any) => {
       this.cityStatData = res.cityStats;
@@ -121,7 +121,8 @@ export class LaCityComparisonComponent {
   // Chart configuration
   public barChartOptions: any = {
     responsive: true,
-    scales: { xAxes: [{}], yAxes: [{ id: 'y-axis-0', position: 'left' }, { id: 'y-axis-1', position: 'right' }] }
+    scales: { xAxes: [{}], yAxes: [{ id: 'y-axis-0', position: 'left' }, { id: 'y-axis-1', position: 'right' }] },
+    backgroundColor: 'rgba(63, 81, 181, 0.4)'
   };
   public barChartLabels: string[] = this.cities;
   public barChartType: ChartType = 'bar';
