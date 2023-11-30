@@ -1,0 +1,33 @@
+<h2>LA Hate Crime Statistics</h2>
+<mat-form-field class="m-3">
+    <mat-label>Choose race</mat-label>
+    <mat-select [(value)]="raceChosen" (selectionChange)="setHateCrimeBarChartData()">
+        <mat-option value="All">All</mat-option>
+        <mat-option *ngFor="let race of raceChoices"  value="{{race}}">{{race}}</mat-option>
+    </mat-select>
+</mat-form-field>
+<mat-form-field class="m-3">
+    <mat-label>Choose Crime Location</mat-label>
+    <mat-select [(value)]="locationType" (selectionChange)="setHateCrimeBarChartData()">
+        <mat-option value="All">All</mat-option>
+        <mat-option value="0">Public</mat-option>
+        <mat-option value="1">Private</mat-option>
+    </mat-select>
+</mat-form-field>
+<mat-form-field class="m-3">
+    <mat-label>Choose Bias Motivation</mat-label>
+    <mat-select [(value)]="biasMotivation" (selectionChange)="setHateCrimeBarChartData()">
+        <mat-option value="All">All</mat-option>
+        <mat-option *ngFor="let bias of biasMotivationChoices"  value="{{bias}}">{{bias}}</mat-option>
+    </mat-select>
+</mat-form-field>
+
+<!-- <div *ngIf="showGraph"> -->
+    <canvas baseChart style="width: 1000px;"
+        [data]="hateCrimeBarChartData"
+        [options]="hateCrimeBarChartOptions"
+        [plugins]="hateCrimeBarChartPlugins"
+        [legend]="hateCrimeBarChartLegend"
+        [type]="'bar'">
+    </canvas>
+<!-- </div> -->

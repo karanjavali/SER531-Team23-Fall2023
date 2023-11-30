@@ -1,0 +1,16 @@
+<h3>Which area in Los Angeles are you going to live in? </h3>
+    
+<mat-form-field class="m-3">
+    <mat-label>Choose Area</mat-label>
+    <mat-select [(value)]="lapdMainArea" (selectionChange)="setLAPDMainBarChartData()">
+        <mat-option *ngFor="let area of lapdMainAreaList"  value="{{area}}">{{area}}</mat-option>
+    </mat-select>
+</mat-form-field>
+
+<canvas baseChart style="width: 100%; height: 1000px"
+        [data]="lapdMainBarChartData"
+        [options]="lapdMainBarChartOptions"
+        [plugins]="lapdMainBarChartPlugins"
+        [legend]="lapdMainBarChartLegend"
+        [type]="'bar'">
+</canvas>
