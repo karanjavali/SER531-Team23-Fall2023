@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
+import { ChartConfiguration, ChartData, ChartEvent, ChartType, ChartOptions } from 'chart.js';
 import { SpinnerService } from '../../services/spinner.service';
 import { ApiService } from '../../services/api.service';
 import { BaseChartDirective } from 'ng2-charts';
@@ -16,14 +16,16 @@ export class LaLapdCrimeComponent {
 
   // random starting data
   public lapdMainBarChartData = {
-    labels: [ '2006', '2007', '2008', '2009', '2010', '2011', '2012' ],
+    labels: [ '' ],
     datasets: [
-      { data: [ 65, 59, 80, 81, 56, 55, 40 ], label: 'Series A' }
+      { data: [ 0 ], label: '' }
     ]
   };
 
+  numOffensesTotal:number = 0;
   public lapdMainBarChartOptions: ChartConfiguration<'bar'>['options'] = {
     responsive: false,
+    indexAxis: "y"
   };
 
   lapdMainData:any[] = [];
@@ -48,6 +50,7 @@ export class LaLapdCrimeComponent {
           this.lapdMainAreaList.push(crime['Area']);
         }
       }
+      this.numOffensesTotal = this.lapdMainData.length;
       this.lapdMainAreaList.sort();
       this.lapdMainArea = this.lapdMainAreaList[0];
 
@@ -85,7 +88,6 @@ export class LaLapdCrimeComponent {
       }
       
     });
-
     this.lapdMainBarChartData.labels = uniqueOffences;
     this.lapdMainBarChartData.datasets = [{data: offenceCounts, label: 'Offence Count'}];
     this.updateChart();

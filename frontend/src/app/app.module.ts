@@ -5,11 +5,11 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { MaterialModule } from './material/material.module';
-import { NgChartsConfiguration, NgChartsModule } from 'ng2-charts';
+import { NgChartsConfiguration, NgChartsModule} from 'ng2-charts';
 import { HttpClientModule } from '@angular/common/http';
 import { LaHateCrimeComponent } from './components/la-hate-crime/la-hate-crime.component';
 import { LaLapdCrimeComponent } from './components/la-lapd-crime/la-lapd-crime.component';
-import { LaRaceDistributionComponent } from './components/la-race-distribution/la-race-distribution.component';
+import { LaCityComparisonComponent } from './components/la-city-comparison/la-city-comparison.component';
 
 
 @NgModule({
@@ -17,7 +17,7 @@ import { LaRaceDistributionComponent } from './components/la-race-distribution/l
     AppComponent,
     LaHateCrimeComponent,
     LaLapdCrimeComponent,
-    LaRaceDistributionComponent
+    LaCityComparisonComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,64 @@
+<h2 class="my-3">Compare City Statistics with Los Angeles</h2>
+
+<p class="my-2">Want to compare a city's statistics with that of Los Angeles? Select a city from the options provided</p>
+
+<div class="d-flex">
+    <mat-form-field class="m-3">
+        <mat-label>Choose State</mat-label>
+        <mat-select [(value)]="chosenState" (selectionChange)="selectState()" >
+            <mat-option *ngFor="let state of stateOptions"  value="{{state}}">{{state}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    
+    <mat-form-field class="m-3">
+        <mat-label>Choose City</mat-label>
+        <mat-select [(value)]="chosenCity" (selectionChange)="selectCity()">
+            <mat-option *ngFor="let city of cityOptions"  value="{{city}}">{{city}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+
+
+
+<div class="d-flex">
+    <div class="w-50">
+        <h5 class="text-center">Los Angeles Percentage Race Distribution</h5>
+        <canvas 
+        baseChart class="mx-auto"
+        [data]="losAngelesPieChartData"
+        [type]="pieChartType"
+        [options]="pieChartOptions"
+        [plugins]="pieChartPlugins"
+        >
+        </canvas>
+        
+    </div>
+    <div class="w-50">
+        <h5 class="text-center">{{chosenCity}} Percentage Race Distribution</h5>
+            
+        <canvas 
+        baseChart  class="mx-auto"
+        [data]="chosenCityPieChartData"
+        [type]="pieChartType"
+        [options]="pieChartOptions"
+        [plugins]="pieChartPlugins"
+        >
+        </canvas>
+        
+    </div>
+
+    
+</div>
+<br>
+<h5 class="text-center my-2">More statistics to compare...</h5>
+<div class="w-75 mx-auto">
+    <canvas baseChart 
+            [datasets]="barChartData"
+            [labels]="barChartLabels"
+            [options]="barChartOptions"
+            [legend]="barChartLegend"
+            [type]="'bar'"
+            [plugins]="barChartPlugins">
+    </canvas>
+</div>
+<br>

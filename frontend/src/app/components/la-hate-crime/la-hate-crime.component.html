@@ -1,4 +1,5 @@
-<h2>LA Hate Crime Statistics</h2>
+<h3 class="my-3">Los Angeles Hate Crime Statistics</h3>
+<p class="my-2">You can view the hate crime statistics of Los Angeles and choose filters</p>
 <mat-form-field class="m-3">
     <mat-label>Choose race</mat-label>
     <mat-select [(value)]="raceChosen" (selectionChange)="setHateCrimeBarChartData()">
@@ -22,12 +23,10 @@
     </mat-select>
 </mat-form-field>
 
-<!-- <div *ngIf="showGraph"> -->
-    <canvas baseChart style="width: 1000px;"
-        [data]="hateCrimeBarChartData"
-        [options]="hateCrimeBarChartOptions"
-        [plugins]="hateCrimeBarChartPlugins"
-        [legend]="hateCrimeBarChartLegend"
-        [type]="'bar'">
-    </canvas>
-<!-- </div> -->
+<canvas baseChart class="custom-bar-chart-class"
+    [data]="hateCrimeBarChartData"
+    [options]="hateCrimeBarChartOptions"
+    [plugins]="hateCrimeBarChartPlugins"
+    [legend]="hateCrimeBarChartLegend"
+    [type]="'bar'">
+</canvas>

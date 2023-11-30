@@ -26,9 +26,9 @@ export class LaHateCrimeComponent {
   public hateCrimeBarChartPlugins = [];
 
   public hateCrimeBarChartData = {
-    labels: [ '2006', '2007', '2008', '2009', '2010', '2011', '2012' ],
+    labels: [ '' ],
     datasets: [
-      { data: [ 65, 59, 80, 81, 56, 55, 40 ], label: 'Series A' }
+      { data: [ 0 ], label: '' }
     ]
   };
 
@@ -49,8 +49,6 @@ export class LaHateCrimeComponent {
     this.spinnerService.showSpinner();
     this.api.get(environment.getCrimeDataUrl).subscribe((res:any) => {
       this.hateCrimeData = res.hateCrime;
-      // this.crimeStatData = res.cityStats;
-      // this.lapdMainData = res.lapdMain;
       
       for(let crime of this.hateCrimeData) {
         if (!this.raceChoices.includes(crime['Criminal Race'])) {
@@ -60,20 +58,11 @@ export class LaHateCrimeComponent {
           this.biasMotivationChoices.push(crime['Bias Motivation']);
         }
       }
-
-      // for(let crime of this.lapdMainData) {
-      //   if (!this.lapdMainAreaList.includes(crime['Area'])) {
-      //     this.lapdMainAreaList.push(crime['Area']);
-      //   }
-      // }
-      // this.lapdMainAreaList.sort();
-      // this.lapdMainArea = this.lapdMainAreaList[0];
       this.raceChoices.sort();
       this.biasMotivationChoices.sort();
 
       
       this.setHateCrimeBarChartData();
-      // this.setLAPDMainBarChartData();
       this.spinnerService.hideSpinner();
 
     });

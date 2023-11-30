@@ -1,5 +1,7 @@
 <h3>Which area in Los Angeles are you going to live in? </h3>
     
+<p class="my-2">You can decide by choosing an area and viewing the crime statistics</p>
+
 <mat-form-field class="m-3">
     <mat-label>Choose Area</mat-label>
     <mat-select [(value)]="lapdMainArea" (selectionChange)="setLAPDMainBarChartData()">
@@ -7,10 +9,15 @@
     </mat-select>
 </mat-form-field>
 
-<canvas baseChart style="width: 100%; height: 1000px"
+<p class="my-2">Total Number of Offenses Recorded in Los Angeles- {{numOffensesTotal}}</p>
+
+
+<canvas baseChart class="custom-la-chart-style" 
         [data]="lapdMainBarChartData"
         [options]="lapdMainBarChartOptions"
         [plugins]="lapdMainBarChartPlugins"
         [legend]="lapdMainBarChartLegend"
         [type]="'bar'">
 </canvas>
+
+<br>
