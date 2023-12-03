@@ -1,6 +1,5 @@
 from flask import Flask, request
 import os, requests
-import pandas as pd
 import json
 
 from dotenv import load_dotenv
