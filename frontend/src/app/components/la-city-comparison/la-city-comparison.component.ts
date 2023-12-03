@@ -74,7 +74,7 @@ export class LaCityComparisonComponent {
     }
     this.spinnerService.showSpinner();
     this.api.post(this.getQueryDataUrl, payload_state_list).subscribe((res:any) => {
-      
+      this.spinnerService.hideSpinner();
       for(let state of res) {
         this.stateOptions.push(state.state);
       } 
@@ -85,6 +85,7 @@ export class LaCityComparisonComponent {
         query: cityListQuery
       }
       
+      this.spinnerService.showSpinner();
       this.api.post(this.getQueryDataUrl, payload_city_list).subscribe((res:any) => {
         this.spinnerService.hideSpinner();
         for(let city of res) {

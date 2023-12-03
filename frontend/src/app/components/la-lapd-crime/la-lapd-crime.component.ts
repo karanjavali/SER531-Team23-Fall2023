@@ -45,10 +45,12 @@ export class LaLapdCrimeComponent {
   ngOnInit() {
     // get lapd main data
     const getAreaListQuery = this.queryService.getLAPDMainAreaList();
-    this.spinnerService.showSpinner();
+    
     const payload_get_area_list = {
       query: getAreaListQuery
     }
+
+    this.spinnerService.showSpinner();
     this.api.post(environment.getDataUrl, payload_get_area_list).subscribe((res:any) => {
       this.spinnerService.hideSpinner();
       this.lapdMainAreaList = [];
