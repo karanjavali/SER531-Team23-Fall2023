@@ -12,10 +12,12 @@ import { QueryService } from '../../services/query.service';
   styleUrl: './la-lapd-crime.component.scss'
 })
 export class LaLapdCrimeComponent {
+  
+  // lapd main bar chart component settings
   public lapdMainBarChartLegend = true;
   public lapdMainBarChartPlugins = [];
 
-  // random starting data
+  
   public lapdMainBarChartData = {
     labels: [ '' ],
     datasets: [
@@ -23,7 +25,7 @@ export class LaLapdCrimeComponent {
     ]
   };
 
-  numOffensesTotal:number = 0;
+  
   public lapdMainBarChartOptions: ChartConfiguration<'bar'>['options'] = {
     responsive: false,
     indexAxis: "y",
