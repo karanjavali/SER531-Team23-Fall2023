@@ -5,14 +5,14 @@
 <div class="d-flex">
     <mat-form-field class="m-3">
         <mat-label>Choose State</mat-label>
-        <mat-select [(value)]="chosenState" (selectionChange)="selectState()" >
+        <mat-select [(value)]="chosenState" (selectionChange)="onSelectState()" >
             <mat-option *ngFor="let state of stateOptions"  value="{{state}}">{{state}}</mat-option>
         </mat-select>
     </mat-form-field>
     
     <mat-form-field class="m-3">
         <mat-label>Choose City</mat-label>
-        <mat-select [(value)]="chosenCity" (selectionChange)="selectCity()">
+        <mat-select [(value)]="chosenCity" (selectionChange)="onSelectCity()">
             <mat-option *ngFor="let city of cityOptions"  value="{{city}}">{{city}}</mat-option>
         </mat-select>
     </mat-form-field>

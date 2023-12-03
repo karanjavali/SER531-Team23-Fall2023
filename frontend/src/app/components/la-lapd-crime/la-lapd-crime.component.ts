@@ -4,6 +4,7 @@ import { SpinnerService } from '../../services/spinner.service';
 import { ApiService } from '../../services/api.service';
 import { BaseChartDirective } from 'ng2-charts';
 import { environment } from '../../../environments/environment';
+import { QueryService } from '../../services/query.service';
 
 @Component({
   selector: 'app-la-lapd-crime',
@@ -37,61 +38,56 @@ export class LaLapdCrimeComponent {
 
   constructor(
     private spinnerService: SpinnerService,
-    private api: ApiService
+    private api: ApiService,
+    private queryService: QueryService
   ) { }
 
   ngOnInit() {
     // get lapd main data
+    const getAreaListQuery = this.queryService.getLAPDMainAreaList();
     this.spinnerService.showSpinner();
-    this.api.get(environment.getCrimeDataUrl).subscribe((res:any) => {
-      this.lapdMainData = res.lapdMain;
-      
-      for(let crime of this.lapdMainData) {
-        if (!this.lapdMainAreaList.includes(crime['Area'])) {
-          this.lapdMainAreaList.push(crime['Area']);
-        }
-      }
-      this.numOffensesTotal = this.lapdMainData.length;
-      this.lapdMainAreaList.sort();
-      this.lapdMainArea = this.lapdMainAreaList[0];
-
-      
-      this.setLAPDMainBarChartData();
+    const payload_get_area_list = {
+      query: getAreaListQuery
+    }
+    this.api.post(environment.getDataUrl, payload_get_area_list).subscribe((res:any) => {
       this.spinnerService.hideSpinner();
+      this.lapdMainAreaList = [];
+      
+      for (let area of res) {
+        this.lapdMainAreaList.push(area.area);
+      }
+
+      this.lapdMainArea = this.lapdMainAreaList[0];
+      this.setLAPDMainBarChartData();
 
     });
   }
 
   updateChart() {
-    this.lapdMainChart.chart.update()
+    this.lapdMainChart.chart.update();
   }
 
   setLAPDMainBarChartData():void {
     
-    // Create an array to store unique "CrimeCodeDesc" values
     const uniqueOffences: string[] = [];
-
-    // Create an array to store counts of each "CrimeCodeDesc"
     const offenceCounts: number[] = [];
-    // Iterate through the crimeData array
-    this.lapdMainData.forEach((crime) => {
-      const offenceIndex = uniqueOffences.indexOf(crime["CrimeCodeDesc"]);
-      const lapdMainAreaCondition = crime['Area'] == this.lapdMainArea;
-      if (lapdMainAreaCondition) {
-        if (offenceIndex === -1) {
-          // If the offence is not in the uniqueOffences array, add it and set the count to 1
-          uniqueOffences.push(crime["CrimeCodeDesc"]);
-          offenceCounts.push(1);
-        } else {
-          // If the offence is already in the array, increment its count
-          offenceCounts[offenceIndex]++;
-        }
+
+    const getAreaDataQuery = this.queryService.getLAPDMainData(this.lapdMainArea);
+    const payload_get_area_data = {
+      query: getAreaDataQuery
+    }
+
+    this.spinnerService.showSpinner();
+    this.api.post(environment.getDataUrl, payload_get_area_data).subscribe((res:any) => {
+      this.spinnerService.hideSpinner();
+      for (let data of res) {
+        uniqueOffences.push(data.crimeDescription);
+        offenceCounts.push(data.crimeCount);
       }
-      
-    });
-    this.lapdMainBarChartData.labels = uniqueOffences;
-    this.lapdMainBarChartData.datasets = [{data: offenceCounts, label: 'Offence Count'}];
-    this.updateChart();
+      this.lapdMainBarChartData.labels = uniqueOffences;
+      this.lapdMainBarChartData.datasets = [{data: offenceCounts, label: 'Offence Count'}];
+      this.updateChart();
+    })
   }
 
 

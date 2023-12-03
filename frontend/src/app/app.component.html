@@ -1,15 +1,12 @@
-<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "ball-spin-clockwise" [fullScreen] = "true"><p class="white" > Loading... </p></ngx-spinner>
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "ball-spin-clockwise" [fullScreen] = "true"><p class="text-white" > Loading... </p></ngx-spinner>
 <mat-toolbar color="primary">
     <mat-toolbar-row class="justify-content-center">
         <h1>Los Angeles Crime Data Analysis</h1>
     </mat-toolbar-row>
 </mat-toolbar>
 <div class="container">
-    
-    <app-la-hate-crime></app-la-hate-crime>
-    <br>
-    <app-la-city-comparison></app-la-city-comparison>
     <app-la-lapd-crime></app-la-lapd-crime>
+    <app-la-hate-crime></app-la-hate-crime>
+    <app-la-city-comparison></app-la-city-comparison>
     
-   
 </div>

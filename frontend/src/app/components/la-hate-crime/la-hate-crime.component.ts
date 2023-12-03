@@ -4,6 +4,8 @@ import { ApiService } from '../../services/api.service';
 import { environment } from '../../../environments/environment';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration } from 'chart.js';
+import { QueryService } from '../../services/query.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-la-hate-crime',
@@ -39,34 +41,43 @@ export class LaHateCrimeComponent {
 
   constructor(
     private spinnerService: SpinnerService,
-    private api: ApiService
+    private api: ApiService,
+    private queryService: QueryService
   ) {
 
   }
 
   ngOnInit() {
+    
+    this.raceChoices = [];
+    this.biasMotivationChoices = [];
 
-    // get hate crime data
+    // get race and bias motivation lists
+    const getCriminalRaceQuery = this.queryService.getHateCrimeCriminalRaceList();
+    const getBiasMotivationListQuery = this.queryService.getHateCrimeBiasMotivationList();
+
+    const payload_race_list = {
+      query: getCriminalRaceQuery
+    }
+
+    const payload_bias_motivation_list = {
+      query: getBiasMotivationListQuery
+    }
+
+    
     this.spinnerService.showSpinner();
-    this.api.get(environment.getCrimeDataUrl).subscribe((res:any) => {
-      this.hateCrimeData = res.hateCrime;
-      
-      for(let crime of this.hateCrimeData) {
-        if (!this.raceChoices.includes(crime['Criminal Race'])) {
-          this.raceChoices.push(crime['Criminal Race']);
-        }
-        if (!this.biasMotivationChoices.includes(crime['Bias Motivation'])) {
-          this.biasMotivationChoices.push(crime['Bias Motivation']);
-        }
-      }
-      this.raceChoices.sort();
-      this.biasMotivationChoices.sort();
-
-      
-      this.setHateCrimeBarChartData();
+    forkJoin([this.api.post(environment.getDataUrl, payload_race_list), this.api.post(environment.getDataUrl, payload_bias_motivation_list)]).subscribe((res:any[]) => {
       this.spinnerService.hideSpinner();
+      for (let race of res[0]) {
+        this.raceChoices.push(race.criminalRace);
+      }
 
-    });
+      for (let biasMotivation of res[1]) {
+        this.biasMotivationChoices.push(biasMotivation.biasMotivation);
+      }
+
+      this.setHateCrimeBarChartData();
+    })
   }
 
   updateChart() {
@@ -74,36 +85,27 @@ export class LaHateCrimeComponent {
   }
 
   setHateCrimeBarChartData(): void {
-    
-    console.log('set data');
-    // Create an array to store unique "Type of Offence" values
-    const uniqueOffences: string[] = [];
 
-    // Create an array to store counts of each "Type of Offence"
+    const uniqueOffences: string[] = [];
     const offenceCounts: number[] = [];
-    // Iterate through the crimeData array
-    this.hateCrimeData.forEach((crime) => {
-      const offenceIndex = uniqueOffences.indexOf(crime["Type of Offence"]);
-      const raceCondition = crime['Criminal Race'] == this.raceChosen || this.raceChosen == 'All';
-      const locationCondition = crime['Type of Location'] == this.locationType || this.locationType == 'All';
-      const biasCondition = crime['Bias Motivation'] == this.biasMotivation || this.biasMotivation == 'All';
-      const cityCondition = crime['City'] == "Los Angeles";
-      if (raceCondition && cityCondition && locationCondition && biasCondition) {
-        if (offenceIndex === -1) {
-          // If the offence is not in the uniqueOffences array, add it and set the count to 1
-          uniqueOffences.push(crime["Type of Offence"]);
-          offenceCounts.push(1);
-        } else {
-          // If the offence is already in the array, increment its count
-          offenceCounts[offenceIndex]++;
-        }
+
+    const getHateCrimeDataQuery = this.queryService.getHateCrimeDataQuery(this.raceChosen, this.locationType, this.biasMotivation);
+    const payload_hate_crime = {
+      query: getHateCrimeDataQuery
+    }
+
+    this.api.post(environment.getDataUrl, payload_hate_crime).subscribe((res:any) => {
+      for (let crime of res) {
+        uniqueOffences.push(crime.offenceType);
+        offenceCounts.push(crime.offenceCount);
       }
       
-    });
+      this.hateCrimeBarChartData.labels = uniqueOffences;
+      this.hateCrimeBarChartData.datasets = [{data: offenceCounts, label: 'Offence Count'}];
+      this.updateChart();
+    })
 
-    this.hateCrimeBarChartData.labels = uniqueOffences;
-    this.hateCrimeBarChartData.datasets = [{data: offenceCounts, label: 'Offence Count'}];
-    this.updateChart();
+    
   }
 
   
