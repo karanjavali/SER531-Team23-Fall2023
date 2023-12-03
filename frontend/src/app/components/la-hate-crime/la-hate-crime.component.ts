@@ -24,6 +24,7 @@ export class LaHateCrimeComponent {
 
   @ViewChild(BaseChartDirective) hateCrimeChart: any;
 
+  // hate crime bar chart component settings
   public hateCrimeBarChartLegend = true;
   public hateCrimeBarChartPlugins = [];
 
@@ -47,6 +48,8 @@ export class LaHateCrimeComponent {
 
   }
 
+  // load the filter options -> bias motivation and race list
+  // load the initial hate crime data (no filters)
   ngOnInit() {
     
     this.raceChoices = [];
@@ -84,6 +87,7 @@ export class LaHateCrimeComponent {
     this.hateCrimeChart.chart.update()
   }
 
+  // set hate crime data whenever filters are updated
   setHateCrimeBarChartData(): void {
 
     const uniqueOffences: string[] = [];

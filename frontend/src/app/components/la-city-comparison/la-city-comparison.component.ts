@@ -14,9 +14,15 @@ import { forkJoin } from 'rxjs';
   styleUrl: './la-city-comparison.component.scss'
 })
 export class LaCityComparisonComponent {
-  cityStatData:any[] = [];
-  chosenCity:string = '';
 
+  
+  chosenCity:string = '';
+  chosenCityStats:any = {};
+  chosenState:string = '';
+  stateOptions:string[] = [];
+  losAngelesCityStats:any = {};
+
+  // pie chart component settings
   public pieChartOptions: ChartConfiguration['options'] = {
     responsive: false
   };
@@ -57,11 +63,6 @@ export class LaCityComparisonComponent {
     private queryService: QueryService
   ) { }
 
-  chosenCityStats:any = {};
-  chosenState:string = '';
-  stateOptions:string[] = [];
-  losAngelesCityStats:any = {};
-
   @ViewChildren(BaseChartDirective) charts: any;
 
   cityOptions:string[] = [];
@@ -91,8 +92,7 @@ export class LaCityComparisonComponent {
         for(let city of res) {
           this.cityOptions.push(city.city);
         }
-        this.chosenCity = this.cityOptions[0];
-        this.onSelectCity();
+        
 
 
         const laStatsQuery = this.queryService.getCityStatsQuery("CA", "LosAngelesCity");
@@ -102,7 +102,8 @@ export class LaCityComparisonComponent {
         this.spinnerService.showSpinner();
         this.api.post(this.getQueryDataUrl, payload_la_stats).subscribe((res:any) => {
           this.spinnerService.hideSpinner();
-          
+          this.chosenCity = this.cityOptions[0];
+          this.onSelectCity();
           //update la chart
           const laData = res[0];
           this.losAngelesPieChartData.datasets[0].data = [laData['percentWhite'], laData['percentBlack'], laData['percentNative'], laData['percentAsian'], laData['percentHispanic']];
