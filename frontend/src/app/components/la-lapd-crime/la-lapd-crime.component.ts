@@ -12,10 +12,12 @@ import { QueryService } from '../../services/query.service';
   styleUrl: './la-lapd-crime.component.scss'
 })
 export class LaLapdCrimeComponent {
+  
+  // lapd main bar chart component settings
   public lapdMainBarChartLegend = true;
   public lapdMainBarChartPlugins = [];
 
-  // random starting data
+  
   public lapdMainBarChartData = {
     labels: [ '' ],
     datasets: [
@@ -23,7 +25,7 @@ export class LaLapdCrimeComponent {
     ]
   };
 
-  numOffensesTotal:number = 0;
+  
   public lapdMainBarChartOptions: ChartConfiguration<'bar'>['options'] = {
     responsive: false,
     indexAxis: "y",
@@ -45,11 +47,14 @@ export class LaLapdCrimeComponent {
   ngOnInit() {
     // get lapd main data
     const getAreaListQuery = this.queryService.getLAPDMainAreaList();
-    this.spinnerService.showSpinner();
+    
     const payload_get_area_list = {
       query: getAreaListQuery
     }
+
+    this.spinnerService.showSpinner();
     this.api.post(environment.getDataUrl, payload_get_area_list).subscribe((res:any) => {
+      this.spinnerService.hideSpinner();
       this.lapdMainAreaList = [];
       
       for (let area of res) {
@@ -76,7 +81,9 @@ export class LaLapdCrimeComponent {
       query: getAreaDataQuery
     }
 
+    this.spinnerService.showSpinner();
     this.api.post(environment.getDataUrl, payload_get_area_data).subscribe((res:any) => {
+      this.spinnerService.hideSpinner();
       for (let data of res) {
         uniqueOffences.push(data.crimeDescription);
         offenceCounts.push(data.crimeCount);

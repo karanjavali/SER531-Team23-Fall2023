@@ -20,15 +20,11 @@ export class LaHateCrimeComponent {
 
   raceChoices:string[] = [];
   locationChoices:string[] = ['Public','Private'];
-  locationValues:any = {
-    'Public': 0,
-    'Private': 1,
-    'All':'All'
-  }
   biasMotivationChoices:string[] = [];
 
   @ViewChild(BaseChartDirective) hateCrimeChart: any;
 
+  // hate crime bar chart component settings
   public hateCrimeBarChartLegend = true;
   public hateCrimeBarChartPlugins = [];
 
@@ -52,6 +48,8 @@ export class LaHateCrimeComponent {
 
   }
 
+  // load the filter options -> bias motivation and race list
+  // load the initial hate crime data (no filters)
   ngOnInit() {
     
     this.raceChoices = [];
@@ -89,18 +87,20 @@ export class LaHateCrimeComponent {
     this.hateCrimeChart.chart.update()
   }
 
+  // set hate crime data whenever filters are updated
   setHateCrimeBarChartData(): void {
-    const locationValue = this.locationValues[this.locationType];
 
     const uniqueOffences: string[] = [];
     const offenceCounts: number[] = [];
 
-    const getHateCrimeDataQuery = this.queryService.getHateCrimeDataQuery(this.raceChosen, locationValue, this.biasMotivation);
+    const getHateCrimeDataQuery = this.queryService.getHateCrimeDataQuery(this.raceChosen, this.locationType, this.biasMotivation);
     const payload_hate_crime = {
       query: getHateCrimeDataQuery
     }
 
+    this.spinnerService.showSpinner();
     this.api.post(environment.getDataUrl, payload_hate_crime).subscribe((res:any) => {
+      this.spinnerService.hideSpinner();
       for (let crime of res) {
         uniqueOffences.push(crime.offenceType);
         offenceCounts.push(crime.offenceCount);
