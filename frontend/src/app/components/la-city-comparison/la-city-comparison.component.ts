@@ -57,6 +57,28 @@ export class LaCityComparisonComponent {
     ],
   };
 
+  cities: string[] = ['Los Angeles', ''];
+  medianIncome: number[] = [0, 0];
+  percentageHighSchoolAbove25: number[] = [0, 0];
+  percentageBelowPoverty: number[] = [0, 0];
+
+  // Bar chart configuration
+  public barChartOptions: any = {
+    responsive: true,
+    scales: { xAxes: [{}], yAxes: [{ id: 'y-axis-0', position: 'left' }, { id: 'y-axis-1', position: 'right' }] },
+    backgroundColor: 'rgba(63, 81, 181, 0.4)'
+  };
+  public barChartLabels: string[] = this.cities;
+  public barChartType: ChartType = 'bar';
+  public barChartLegend = true;
+  public barChartPlugins = [];
+
+  public barChartData: any[] = [
+    { data: this.medianIncome, label: 'Median Income In USD', yAxisID: 'y-axis-0' },
+    { data: this.percentageHighSchoolAbove25, label: 'Percentage Above High School Educated', yAxisID: 'y-axis-1', type: 'line' },
+    { data: this.percentageBelowPoverty, label: 'Percentage Below Poverty', yAxisID: 'y-axis-1', type: 'line' }
+  ];
+
   constructor(
     private spinnerService: SpinnerService,
     private api: ApiService,
@@ -93,7 +115,8 @@ export class LaCityComparisonComponent {
           this.cityOptions.push(city.city);
         }
         
-
+        this.chosenCity = this.cityOptions[0];
+        this.onSelectCity();
 
         const laStatsQuery = this.queryService.getCityStatsQuery("CA", "LosAngelesCity");
         const payload_la_stats = {
@@ -102,15 +125,15 @@ export class LaCityComparisonComponent {
         this.spinnerService.showSpinner();
         this.api.post(this.getQueryDataUrl, payload_la_stats).subscribe((res:any) => {
           this.spinnerService.hideSpinner();
-          this.chosenCity = this.cityOptions[0];
-          this.onSelectCity();
+          
           //update la chart
           const laData = res[0];
           this.losAngelesPieChartData.datasets[0].data = [laData['percentWhite'], laData['percentBlack'], laData['percentNative'], laData['percentAsian'], laData['percentHispanic']];
           this.percentageHighSchoolAbove25[0] = laData['percentEducation'];
           this.percentageBelowPoverty[0] = laData['percentPoverty'];
           this.medianIncome[0] = laData['medianIncome'];
-          this.cities[0] = this.chosenCity
+          this.cities[0] = "Los Angeles City";
+          this.updateCharts();
         });
       });
 
@@ -121,6 +144,7 @@ export class LaCityComparisonComponent {
 
   }
 
+  // update list of cities
   onSelectState() {
     this.cityOptions = [];
     const cityListQuery = this.queryService.getCityListQuery(this.chosenState);
@@ -136,6 +160,7 @@ export class LaCityComparisonComponent {
     });
   }
 
+  // update city stats shown
   onSelectCity() {
     const cityStatsQuery = this.queryService.getCityStatsQuery(this.chosenState, this.chosenCity);
     const payload = {
@@ -162,25 +187,4 @@ export class LaCityComparisonComponent {
     });
   }
 
-  cities: string[] = ['Los Angeles', ''];
-  medianIncome: number[] = [0, 0];
-  percentageHighSchoolAbove25: number[] = [0, 0];
-  percentageBelowPoverty: number[] = [0, 0];
-
-  // Chart configuration
-  public barChartOptions: any = {
-    responsive: true,
-    scales: { xAxes: [{}], yAxes: [{ id: 'y-axis-0', position: 'left' }, { id: 'y-axis-1', position: 'right' }] },
-    backgroundColor: 'rgba(63, 81, 181, 0.4)'
-  };
-  public barChartLabels: string[] = this.cities;
-  public barChartType: ChartType = 'bar';
-  public barChartLegend = true;
-  public barChartPlugins = [];
-
-  public barChartData: any[] = [
-    { data: this.medianIncome, label: 'Median Income In USD', yAxisID: 'y-axis-0' },
-    { data: this.percentageHighSchoolAbove25, label: 'Percentage Above High School Educated', yAxisID: 'y-axis-1', type: 'line' },
-    { data: this.percentageBelowPoverty, label: 'Percentage Below Poverty', yAxisID: 'y-axis-1', type: 'line' }
-  ];
 }
