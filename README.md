@@ -31,3 +31,5 @@ Create a .env file in the backend folder. A sample is provided for the content i
 a. pip install -r requirements.txt
 
 b. flask run
+
+NOTE - When running locally, you may face CORS issue.
