@@ -5,6 +5,8 @@ import { SpinnerService } from '../../services/spinner.service';
 import { ApiService } from '../../services/api.service';
 import { environment } from '../../../environments/environment';
 import { BaseChartDirective } from 'ng2-charts';
+import { QueryService } from '../../services/query.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-la-city-comparison',
@@ -51,7 +53,8 @@ export class LaCityComparisonComponent {
 
   constructor(
     private spinnerService: SpinnerService,
-    private api: ApiService
+    private api: ApiService,
+    private queryService: QueryService
   ) { }
 
   chosenCityStats:any = {};
@@ -62,48 +65,92 @@ export class LaCityComparisonComponent {
   @ViewChildren(BaseChartDirective) charts: any;
 
   cityOptions:string[] = [];
+  getQueryDataUrl = environment.getDataUrl;
 
   ngOnInit() {
-    // get city stats data
+    const stateListQuery = this.queryService.getStateListQuery();
+    const payload_state_list = {
+      query: stateListQuery
+    }
     this.spinnerService.showSpinner();
-    this.api.get(environment.getCrimeDataUrl).subscribe((res:any) => {
-      this.cityStatData = res.cityStats;
+    this.api.post(this.getQueryDataUrl, payload_state_list).subscribe((res:any) => {
       
-      this.stateOptions = Array.from(new Set(this.cityStatData.map(city => city.State)));
+      for(let state of res) {
+        this.stateOptions.push(state.state);
+      } 
+      this.chosenState = this.stateOptions[0];
+      this.cityOptions = [];
+      const cityListQuery = this.queryService.getCityListQuery(this.chosenState);
+      const payload_city_list = {
+        query: cityListQuery
+      }
       
-      // choose first state
-      this.chosenState = this.cityStatData[0].State;
-      this.chosenCity = this.cityStatData[0].City;
-      this.selectState();
-      this.selectCity();
-      this.cities[1] = this.chosenCity;
-      this.losAngelesCityStats = this.cityStatData.filter(city => city.City == "Los Angeles city")[0];
-      this.losAngelesPieChartData.datasets[0].data = [this.losAngelesCityStats['%White'], this.losAngelesCityStats['%Black'], this.losAngelesCityStats['%NativeAmerican'], this.losAngelesCityStats['%Asian'], this.losAngelesCityStats['%Hispanic']]
-      this.percentageHighSchoolAbove25[0] = this.losAngelesCityStats['%highSchoolAbove25'];
-      this.percentageBelowPoverty[0] = this.losAngelesCityStats['%belowPoverty'];
-      this.medianIncome[0] = this.losAngelesCityStats['%medianIncome'];
-      this.updateCharts();
-      this.spinnerService.hideSpinner();
+      this.api.post(this.getQueryDataUrl, payload_city_list).subscribe((res:any) => {
+        this.spinnerService.hideSpinner();
+        for(let city of res) {
+          this.cityOptions.push(city.city);
+        }
+        this.chosenCity = this.cityOptions[0];
+        this.onSelectCity();
 
+
+        const laStatsQuery = this.queryService.getCityStatsQuery("Los Angeles city");
+        const payload_la_stats = {
+          query: laStatsQuery
+        }
+        this.spinnerService.showSpinner();
+        this.api.post(this.getQueryDataUrl, payload_la_stats).subscribe((res:any) => {
+          this.spinnerService.hideSpinner();
+          
+          //update la chart
+          const laData = res[0];
+          this.losAngelesPieChartData.datasets[0].data = [laData['percentWhite'], laData['percentBlack'], laData['percentNative'], laData['percentAsian'], laData['percentHispanic']];
+          this.percentageHighSchoolAbove25[0] = laData['percentEducation'];
+          this.percentageBelowPoverty[0] = laData['percentPoverty'];
+          this.medianIncome[0] = laData['medianIncome'];
+          this.cities[0] = this.chosenCity
+        });
+      });
+
+    });
+
+
+
+
+  }
+
+  onSelectState() {
+    this.cityOptions = [];
+    const cityListQuery = this.queryService.getCityListQuery(this.chosenState);
+    const payload = {
+      query: cityListQuery
+    }
+    this.spinnerService.showSpinner();
+    this.api.post(this.getQueryDataUrl, payload).subscribe((res:any) => {
+      this.spinnerService.hideSpinner();
+      for(let city of res) {
+        this.cityOptions.push(city.city);
+      }
     });
   }
 
-  selectState() {
-    const citiesInState = this.cityStatData.filter(city => city.State == this.chosenState);
-    this.cityOptions = [];
-    for (let city of citiesInState) {
-      this.cityOptions.push(city.City);
+  onSelectCity() {
+    const cityStatsQuery = this.queryService.getCityStatsQuery(this.chosenCity);
+    const payload = {
+      query: cityStatsQuery
     }
-  }
-
-  selectCity() {
-    const chosenCityData = this.cityStatData.filter(city => city.City == this.chosenCity)[0];
-    this.chosenCityPieChartData.datasets[0].data = [chosenCityData['%White'], chosenCityData['%Black'], chosenCityData['%NativeAmerican'], chosenCityData['%Asian'], chosenCityData['%Hispanic']];
-    this.percentageHighSchoolAbove25[1] = chosenCityData['%highSchoolAbove25'];
-    this.percentageBelowPoverty[1] = chosenCityData['%belowPoverty'];
-    this.medianIncome[1] = chosenCityData['%medianIncome'];
-    this.cities[1] = chosenCityData['City'];
-    this.updateCharts();
+    this.spinnerService.showSpinner();
+    this.api.post(this.getQueryDataUrl, payload).subscribe((res:any) => {
+      this.spinnerService.hideSpinner();
+      const cityData = res[0];
+      this.chosenCityPieChartData.datasets[0].data = [cityData['percentWhite'], cityData['percentBlack'], cityData['percentNative'], cityData['percentAsian'], cityData['percentHispanic']];
+      this.percentageHighSchoolAbove25[1] = cityData['percentEducation'];
+      this.percentageBelowPoverty[1] = cityData['percentPoverty'];
+      this.medianIncome[1] = cityData['medianIncome'];
+      this.cities[1] = this.chosenCity;
+      this.updateCharts();
+      
+    });
   }
 
 

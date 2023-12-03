@@ -1,0 +1,19 @@
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX lapd: <http://www.semanticweb.org/aaditya9/ontologies/2023/10/LAPD_Crime#>
+
+SELECT DISTINCT ?city
+WHERE {
+  ?cs rdf:type lapd:CityStatistics .
+  ?st rdf:type lapd:US_States .
+  ?c rdf:type lapd:US_City .
+  
+  ?cs lapd:hasStatisticsState ?st .
+  ?cs lapd:hasStatisticsCity ?c .
+
+  BIND(xsd:string(strafter(str(?st), "#")) AS ?state)
+  BIND(xsd:string(strafter(str(?c), "#")) AS ?city)
+  
+  FILTER (?state = "AK")
+}

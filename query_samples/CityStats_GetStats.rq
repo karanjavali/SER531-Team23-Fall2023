@@ -1,0 +1,43 @@
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX lapd: <http://www.semanticweb.org/aaditya9/ontologies/2023/10/LAPD_Crime#>
+
+SELECT DISTINCT ?percentAsian ?percentBlack ?percentWhite ?percentNative ?percentHispanic ?medianIncome ?percentPoverty ?percentEducation
+WHERE {
+  ?cs rdf:type lapd:CityStatistics .
+  ?st rdf:type lapd:US_States .
+  ?c rdf:type lapd:US_City .
+  ?pa rdf:type lapd:PercentAsian .
+  ?pb rdf:type lapd:PercentBlack .
+  ?pw rdf:type lapd:PercentWhite .
+  ?ph rdf:type lapd:PercentHispanic .
+  ?pn rdf:type lapd:PercentNativeAmerican .
+  ?mi rdf:type lapd:MedianIncome .
+  ?phs rdf:type lapd:PercentAbove25HighSchool .
+  ?pbp rdf:type lapd:PercentBelowPoverty .
+  
+  ?cs lapd:hasStatisticsState ?st .
+  ?cs lapd:hasStatisticsCity ?c .
+  ?cs lapd:hasStatisticsAsian ?pa .
+  ?cs lapd:hasStatisticsBlack ?pb .
+  ?cs lapd:hasStatisticsWhite ?pw .
+  ?cs lapd:hasStatisticsHispanic ?ph .
+  ?cs lapd:hasStatisticsNativeAmerican ?pn .
+  ?cs lapd:hasStatisticsMedianIncome ?mi .
+  ?cs lapd:hasStatisticsPercentAbove25HighSchool ?pbs .
+  ?cs lapd:hasStatisticsPercentBelowPoverty ?pbp .
+
+  BIND(xsd:string(strafter(str(?st), "#")) AS ?state)
+  BIND(xsd:string(strafter(str(?c), "#")) AS ?city)
+  BIND(xsd:float(strafter(str(?pa), "#")) AS ?percentAsian)
+  BIND(xsd:float(strafter(str(?pb), "#")) AS ?percentBlack)
+  BIND(xsd:float(strafter(str(?pw), "#")) AS ?percentWhite)
+  BIND(xsd:float(strafter(str(?ph), "#")) AS ?percentHispanic)
+  BIND(xsd:float(strafter(str(?pn), "#")) AS ?percentNative)
+  BIND(xsd:double(strafter(str(?mi), "#")) AS ?medianIncome)
+  BIND(xsd:float(strafter(str(?phs), "#")) AS ?percentEducation)
+  BIND(xsd:float(strafter(str(?pbp), "#")) AS ?percentPoverty)
+  
+  FILTER (?city = "TempeCity")
+}
