@@ -94,7 +94,9 @@ export class LaHateCrimeComponent {
       query: getHateCrimeDataQuery
     }
 
+    this.spinnerService.showSpinner();
     this.api.post(environment.getDataUrl, payload_hate_crime).subscribe((res:any) => {
+      this.spinnerService.hideSpinner();
       for (let crime of res) {
         uniqueOffences.push(crime.offenceType);
         offenceCounts.push(crime.offenceCount);
