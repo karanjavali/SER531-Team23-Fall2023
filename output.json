@@ -1,0 +1,158 @@
+[
+    {
+        "crimeDescription": "Battery-SimpleAssault",
+        "crimeCount": "127"
+    },
+    {
+        "crimeDescription": "AssaultWithDeadlyweapon,AggravatedAssault",
+        "crimeCount": "84"
+    },
+    {
+        "crimeDescription": "Robbery",
+        "crimeCount": "58"
+    },
+    {
+        "crimeDescription": "IntimatePartner-SimpleAssault",
+        "crimeCount": "57"
+    },
+    {
+        "crimeDescription": "Burglary",
+        "crimeCount": "36"
+    },
+    {
+        "crimeDescription": "BrandishWeapon",
+        "crimeCount": "29"
+    },
+    {
+        "crimeDescription": "CriminalThreats-NoWeaponDisplayed",
+        "crimeCount": "28"
+    },
+    {
+        "crimeDescription": "BurglaryFromVehicle",
+        "crimeCount": "18"
+    },
+    {
+        "crimeDescription": "Vandalism-Felony($400&over,AllChurchvandalisms)",
+        "crimeCount": "16"
+    },
+    {
+        "crimeDescription": "IntimatePartner-AggravatedAssault",
+        "crimeCount": "13"
+    },
+    {
+        "crimeDescription": "AttemptedRobbery",
+        "crimeCount": "12"
+    },
+    {
+        "crimeDescription": "Vandalism-Misdeameanor($399Orunder)",
+        "crimeCount": "12"
+    },
+    {
+        "crimeDescription": "Rape,Forcible",
+        "crimeCount": "11"
+    },
+    {
+        "crimeDescription": "OtherAssault",
+        "crimeCount": "10"
+    },
+    {
+        "crimeDescription": "BatteryPolice(simple)",
+        "crimeCount": "7"
+    },
+    {
+        "crimeDescription": "SexualPenetrationw/foreignObject",
+        "crimeCount": "7"
+    },
+    {
+        "crimeDescription": "TheftPlain-Petty($950&under)",
+        "crimeCount": "5"
+    },
+    {
+        "crimeDescription": "BatteryWithSexualContact",
+        "crimeCount": "4"
+    },
+    {
+        "crimeDescription": "Theft,Person",
+        "crimeCount": "4"
+    },
+    {
+        "crimeDescription": "OtherMiscellaneousCrime",
+        "crimeCount": "3"
+    },
+    {
+        "crimeDescription": "ResistingArrest",
+        "crimeCount": "3"
+    },
+    {
+        "crimeDescription": "ShotsFiredAtInhabitedDwelling",
+        "crimeCount": "3"
+    },
+    {
+        "crimeDescription": "Arson",
+        "crimeCount": "2"
+    },
+    {
+        "crimeDescription": "AssaultWithDeadlyWeaponOnPoliceOfficer",
+        "crimeCount": "2"
+    },
+    {
+        "crimeDescription": "BombScare",
+        "crimeCount": "2"
+    },
+    {
+        "crimeDescription": "Burglary,Attempted",
+        "crimeCount": "2"
+    },
+    {
+        "crimeDescription": "CriminalHomicide",
+        "crimeCount": "2"
+    },
+    {
+        "crimeDescription": "Shoplifting-PettyTheft($950&under)",
+        "crimeCount": "2"
+    },
+    {
+        "crimeDescription": "Sodomy/sexualContactb/wPenisOfOnePersToAnusOth",
+        "crimeCount": "2"
+    },
+    {
+        "crimeDescription": "ChildAbuse(physical)-SimpleAssault",
+        "crimeCount": "1"
+    },
+    {
+        "crimeDescription": "Dischargefirearms/shotsFired",
+        "crimeCount": "1"
+    },
+    {
+        "crimeDescription": "IndecentExposure",
+        "crimeCount": "1"
+    },
+    {
+        "crimeDescription": "Kidnapping",
+        "crimeCount": "1"
+    },
+    {
+        "crimeDescription": "Letters,Lewd-Telephonecalls,Lewd",
+        "crimeCount": "1"
+    },
+    {
+        "crimeDescription": "LewdConduct",
+        "crimeCount": "1"
+    },
+    {
+        "crimeDescription": "ThrowingObjectAtMovingVehicle",
+        "crimeCount": "1"
+    },
+    {
+        "crimeDescription": "Trespassing",
+        "crimeCount": "1"
+    },
+    {
+        "crimeDescription": "ViolationOfCourtOrder",
+        "crimeCount": "1"
+    },
+    {
+        "crimeDescription": "Weaponspossession/bombing",
+        "crimeCount": "1"
+    }
+]
