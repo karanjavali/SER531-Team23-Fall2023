@@ -50,6 +50,7 @@ export class LaLapdCrimeComponent {
       query: getAreaListQuery
     }
     this.api.post(environment.getDataUrl, payload_get_area_list).subscribe((res:any) => {
+      this.spinnerService.hideSpinner();
       this.lapdMainAreaList = [];
       
       for (let area of res) {
@@ -76,7 +77,9 @@ export class LaLapdCrimeComponent {
       query: getAreaDataQuery
     }
 
+    this.spinnerService.showSpinner();
     this.api.post(environment.getDataUrl, payload_get_area_data).subscribe((res:any) => {
+      this.spinnerService.hideSpinner();
       for (let data of res) {
         uniqueOffences.push(data.crimeDescription);
         offenceCounts.push(data.crimeCount);

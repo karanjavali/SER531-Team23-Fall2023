@@ -23,11 +23,12 @@ export class QueryService {
       ?cs lapd:hasStatisticsState ?st .\
       \
       BIND(xsd:string(strafter(str(?st), \"#\")) AS ?state)\
-    }";
+    }\
+    ORDER BY ASC(?city)";
   }
 
   getCityListQuery(state:string) {
-    return "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\
+    return `PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\
     PREFIX lapd: <http://www.semanticweb.org/aaditya9/ontologies/2023/10/LAPD_Crime#>\
@@ -45,11 +46,12 @@ export class QueryService {
       BIND(xsd:string(strafter(str(?c), \"#\")) AS ?city)\
       \
       FILTER (?state = \"${state}\")\
-    }";
+    }
+    ORDER BY ASC(?city)`;
   }
 
-  getCityStatsQuery(city:string) {
-    return "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\
+  getCityStatsQuery(state:string, city:string) {
+    return `PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\
     PREFIX lapd: <http://www.semanticweb.org/aaditya9/ontologies/2023/10/LAPD_Crime#>\
@@ -90,15 +92,15 @@ export class QueryService {
       BIND(xsd:float(strafter(str(?phs), \"#\")) AS ?percentEducation)\
       BIND(xsd:float(strafter(str(?pbp), \"#\")) AS ?percentPoverty)\
       \
-      FILTER (?city = \"${city}\")\
-    }";
+      FILTER (?state = \"${state}\" && ?city = \"${city}\")\
+    }`;
   }
 
   getHateCrimeDataQuery(race:string, location:string, biasMotivation:string) {
     
-    let criminalRaceFilter = "?criminalRace = \"${race}\"";
-    let locationTypeFilter = "?locationType = ${location}";
-    let biasMotivationFilter = "?biasMotivation = \"${biasMotivation}\"";
+    let criminalRaceFilter = `?criminalRace = \"${race}\"`;
+    let locationTypeFilter = `?locationType = ${location}`;
+    let biasMotivationFilter = `?biasMotivation = \"${biasMotivation}\"`;
 
     let filters = [];
     if (race != "All") {
@@ -127,10 +129,10 @@ export class QueryService {
       for (let filter of filters) {
         filterString += filter + " ";
       }
-      queryFilterString = "FILTER(${filterString})";
+      queryFilterString = `FILTER(${filterString})`;
     }
     
-    const query = "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\
+    const query = `PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\
     PREFIX lapd: <http://www.semanticweb.org/aaditya9/ontologies/2023/10/LAPD_Crime#>\
@@ -163,13 +165,13 @@ export class QueryService {
     }\
     GROUP BY ?offenceType\
     ORDER BY DESC(?offenceCount)\
-    "
+    `
 
     return query;
   }
 
   getLAPDMainData(city:string) {
-    return "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\
+    return `PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\
     PREFIX lapd: <http://www.semanticweb.org/aaditya9/ontologies/2023/10/LAPD_Crime#>\
@@ -219,8 +221,7 @@ export class QueryService {
       FILTER(?area = \"${city}\")\
     }\
     GROUP BY ?crimeDescription\
-    ORDER BY DESC(?crimeCount)\
-    "
+    `
   }
 
   getLAPDMainAreaList() {
@@ -236,7 +237,8 @@ export class QueryService {
       ?gc lapd:hasGeneralCrimeCity ?ct .\
     \
       BIND(xsd:string(strafter(str(?ct), \"#\")) AS ?area)\
-    }"
+    }\
+    ORDER BY ASC(?area)"
   }
 
   getHateCrimeCriminalRaceList() {
@@ -252,7 +254,8 @@ export class QueryService {
       ?hc lapd:hasHateCrimeCriminalRace ?cr .\
     \
       BIND(xsd:string(strafter(str(?cr), \"#\")) AS ?criminalRace)\
-    }";
+    }\
+    ORDER BY ASC(?criminalRace)";
   }
 
   getHateCrimeBiasMotivationList() {
@@ -268,6 +271,7 @@ export class QueryService {
       ?hc lapd:hasHateCrimeBiasMotivation ?bm .\
       \
       BIND(xsd:string(strafter(str(?bm), \"#\")) AS ?biasMotivation)\
-    }";
+    }\
+    ORDER BY ASC(?biasMotivation)";
   }
 }

@@ -20,11 +20,6 @@ export class LaHateCrimeComponent {
 
   raceChoices:string[] = [];
   locationChoices:string[] = ['Public','Private'];
-  locationValues:any = {
-    'Public': 0,
-    'Private': 1,
-    'All':'All'
-  }
   biasMotivationChoices:string[] = [];
 
   @ViewChild(BaseChartDirective) hateCrimeChart: any;
@@ -90,12 +85,11 @@ export class LaHateCrimeComponent {
   }
 
   setHateCrimeBarChartData(): void {
-    const locationValue = this.locationValues[this.locationType];
 
     const uniqueOffences: string[] = [];
     const offenceCounts: number[] = [];
 
-    const getHateCrimeDataQuery = this.queryService.getHateCrimeDataQuery(this.raceChosen, locationValue, this.biasMotivation);
+    const getHateCrimeDataQuery = this.queryService.getHateCrimeDataQuery(this.raceChosen, this.locationType, this.biasMotivation);
     const payload_hate_crime = {
       query: getHateCrimeDataQuery
     }

@@ -94,7 +94,7 @@ export class LaCityComparisonComponent {
         this.onSelectCity();
 
 
-        const laStatsQuery = this.queryService.getCityStatsQuery("Los Angeles city");
+        const laStatsQuery = this.queryService.getCityStatsQuery("CA", "LosAngelesCity");
         const payload_la_stats = {
           query: laStatsQuery
         }
@@ -135,7 +135,7 @@ export class LaCityComparisonComponent {
   }
 
   onSelectCity() {
-    const cityStatsQuery = this.queryService.getCityStatsQuery(this.chosenCity);
+    const cityStatsQuery = this.queryService.getCityStatsQuery(this.chosenState, this.chosenCity);
     const payload = {
       query: cityStatsQuery
     }
