@@ -45,7 +45,7 @@ export class LaLapdCrimeComponent {
     this.spinnerService.showSpinner();
     this.api.get(environment.getCrimeDataUrl).subscribe((res:any) => {
       this.lapdMainData = res.lapdMain;
-      
+      console.log(res);
       for(let crime of this.lapdMainData) {
         if (!this.lapdMainAreaList.includes(crime['Area'])) {
           this.lapdMainAreaList.push(crime['Area']);
