@@ -75,7 +75,7 @@ export class LaCityComparisonComponent {
 
   public barChartData: any[] = [
     { data: this.medianIncome, label: 'Median Income In USD', yAxisID: 'y-axis-0' },
-    { data: this.percentageHighSchoolAbove25, label: 'Percentage Above High School Educated', yAxisID: 'y-axis-1', type: 'line' },
+    { data: this.percentageHighSchoolAbove25, label: 'Percentage Above High School Educated Over Age 25', yAxisID: 'y-axis-1', type: 'line' },
     { data: this.percentageBelowPoverty, label: 'Percentage Below Poverty', yAxisID: 'y-axis-1', type: 'line' }
   ];
 
